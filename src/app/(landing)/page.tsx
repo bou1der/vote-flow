@@ -1,7 +1,18 @@
-import { auth } from "~/server/auth";
+import { Our } from "./our";
+import { Questions } from "./questions";
+import { Reviews } from "./reviews";
+import { Steps } from "./steps";
+import { Welcome } from "./welcome";
 
 export default async function LandingPage() {
-  const session = await auth();
 
-  return JSON.stringify(session);
+  return (
+    <>
+      <Welcome />
+      <Our />
+      <Steps />
+      <Reviews />
+      <Questions />
+    </>
+  )
 }

@@ -18,7 +18,7 @@ const linkVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
 
         ghost: "hover:bg-accent hover:text-accent-foreground",
-        underline: "text-primary underline-offset-4 hover:underline",
+        underline: "text-foreground underline-offset-4 hover:underline",
       },
       size: {
         default: "h-12 px-4 py-2",

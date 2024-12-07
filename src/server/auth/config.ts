@@ -2,10 +2,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import bcrypt from "bcrypt";
 import type { DefaultSession, NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import EmailProvider from "next-auth/providers/email";
-import GithubProvider from "next-auth/providers/github";
-import GoogleProvider from "next-auth/providers/google";
-import YandexProvider from "next-auth/providers/yandex";
+import EmailProvider from "next-auth/providers/nodemailer";
 import { env } from "~/env";
 
 import { eq } from "drizzle-orm";
@@ -74,18 +71,6 @@ export const authConfig = {
         return (await GetUser(credentials.email as string)) ?? null;
       },
     }),
-    GithubProvider({
-      clientId: env.GITHUB_CLIENT_ID,
-      clientSecret: env.GITHUB_CLIENT_SECRET,
-    }),
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    }),
-    YandexProvider({
-      clientId: env.YANDEX_CLIENT_ID,
-      clientSecret: env.YANDEX_CLIENT_SECRET,
-    }),
     EmailProvider({
       server: {
         host: env.EMAIL_HOST,
@@ -132,4 +117,5 @@ export const authConfig = {
       };
     },
   },
+  secret:env.NEXTAUTH_SECRET,
 } satisfies NextAuthConfig;
