@@ -1,6 +1,11 @@
 import { redirect } from "next/navigation";
 import type React from "react";
 import { auth } from "~/server/auth";
+import { Sidebar } from "./sidebar";
+import { DashboardHeader } from "./header";
+
+
+
 
 export default async function DashboardLayout({
   children,
@@ -13,5 +18,14 @@ export default async function DashboardLayout({
     redirect("/auth/signin");
   }
 
-  return children;
+
+  return (
+    <div className="w-dvw h-dvh flex gap-6">
+      <Sidebar />
+      <div className="grow px-6">
+        <DashboardHeader />
+        {children}
+      </div>
+    </div>
+  );
 }

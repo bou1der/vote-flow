@@ -19,7 +19,11 @@ export async function Footer(){
 
         <div className="flex justify-between items-baseline pb-6">
           <p className="text-white/60">2024. Все права защищены</p>
-          <Link variant="secondary" className="px-12 rounded-3xl" href="/auth/signin">Войти</Link>
+          {
+            session
+              ? <Link href={"/dashboard"} variant={"secondary"} className="rounded-3xl">{session.user.email}</Link>
+              : <Link variant="secondary" className="px-12 rounded-3xl" href="/auth/signin">Войти</Link>
+          }
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
-import { Form, FormControl, FormField, FormItem } from "~/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { OnError } from "~/lib/client/on_error";
 
@@ -45,66 +45,46 @@ export default function SignInPage() {
         throw new Error(res.error);
       }
 
-      router.push("/");
+      router.push("/verification");
     } catch (error) {
       toast.error((error as Error).message);
     }
   }
 
   return (
-    <div className="h-screen container flex items-center justify-center">
-      <div className="rounded-xl shadow-xl border-2 border-input p-6 space-y-6 flex flex-col">
-        <h1 className="text-2xl font-medium">Вход</h1>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit((data) => {
-              OnSubmit({ provider: "email", data });
-            }, OnError)}
-            className="space-y-2"
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="Email"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              className="w-full"
-            >
-              Войти
-            </Button>
-          </form>
-        </Form>
-        <div className="space-y-2 flex flex-col">
+    <div className="h-dvh container flex flex-col justify-center space-y-22 py-20">
+      <h1 className="font-bold text-center text-2xl sm:text-5xl">Вход</h1>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit((data) => {
+            OnSubmit({ provider: "email", data });
+          }, OnError)}
+          className="max-w-[400px] mx-auto w-full space-y-6"
+        >
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormDescription>Почта</FormDescription>
+                <FormControl>
+                  <Input
+                    placeholder="Email"
+                    className="h-12 rounded-2xl"
+                    {...field}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <Button
-            className="min-w-[300px]"
-            onClick={() => OnSubmit({ provider: "google", data: undefined })}
+            type="submit"
+            className="w-full h-12 rounded-2xl cursor-pointer"
           >
-            Войти через Google
+            Войти
           </Button>
-          <Button
-            className="min-w-[300px]"
-            onClick={() => OnSubmit({ provider: "github", data: undefined })}
-          >
-            Войти через Github
-          </Button>
-          <Button
-            className="min-w-[300px]"
-            onClick={() => OnSubmit({ provider: "yandex", data: undefined })}
-          >
-            Войти через Yandex
-          </Button>
-        </div>
-      </div>
+        </form>
+      </Form>
     </div>
   );
 }

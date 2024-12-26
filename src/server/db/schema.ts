@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
   index,
   integer,
   pgEnum,
@@ -14,6 +15,32 @@ import type { AdapterAccount } from "next-auth/adapters";
 export const createTable = pgTableCreator((name) => `project_${name}`);
 
 export const userRoleEnum = pgEnum("user_role", ["ADMIN", "USER"]);
+
+
+const statusEnum = pgEnum("status", [
+  "WAITING",
+  "ACCEPTED",
+  "CANCELED",
+])
+
+export const reviews = createTable("reviews", {
+  id: varchar("id", { length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  status:statusEnum("status")
+    .notNull()
+    .default("WAITING"),
+  description: text("description")
+    .notNull(),
+  userId: varchar("userId", { length: 255 })
+    .notNull()
+    .references(() => users.id),
+  anonymous: boolean("anonymous")
+    .notNull()
+    .default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+})
 
 export const files = createTable("files", {
   id: varchar("id", { length: 255 })
@@ -128,3 +155,4 @@ export const verificationTokens = createTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   }),
 );
+

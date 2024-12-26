@@ -1,3 +1,4 @@
+import { Gradient } from "~/components/icons/gradient";
 import Link from "~/components/ui/link";
 
 
@@ -5,7 +6,8 @@ import Link from "~/components/ui/link";
 export function Welcome(){
   return (
     <div className="h-dvh w-full relative flex items-center">
-      <div className="max-w-[758px] w-full space-y-12 text-center mx-auto">
+      <Gradient className="absolute -translate-x-96 translate-y-52 opacity-70" />
+      <div className="max-w-[758px] z-10 w-full space-y-12 text-center mx-auto">
         <div className="flex flex-col items-center gap-12">
           <h1 className="text-center font-bold">Создавайте темы и голосуйте за лучшее!</h1>
           <p className="text-center max-w-[638px]">Создавайте темы, выбирайте лучшие идеи и участвуйте в честных голосованиях. Ваш голос имеет значение!</p>

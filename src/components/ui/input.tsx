@@ -7,18 +7,22 @@ import { Dialog, DialogContent, DialogTrigger } from "./dialog";
 import { Button } from "./button";
 import { ConvertFiles } from "~/lib/client/file";
 import { toast } from "sonner";
-import { Upload } from "lucide-react";
+import { Upload, UploadIcon } from "lucide-react";
 import { api } from "~/trpc/react";
+import Image from "./image";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
+  images?:ProcessedFile[];
+  imageIds?:string[];
+  aspectClassName?:string;
   onUpload?:(files:ProcessedFile[]) => void;
   preUpload?:(imageId:string) => void;
   asChild?:boolean;
 }
 
 const InputBase = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, onUpload, preUpload, ...props}, ref) => {
+  ({ className, images, aspectClassName, imageIds, type, onUpload, preUpload, ...props}, ref) => {
     if(type === "file"){
       return (
         <label 
@@ -28,7 +32,7 @@ const InputBase = React.forwardRef<HTMLInputElement, InputProps>(
                 ? "animate-pulse cursor-not-allowed"
                 : "cursor-pointer",
               className,
-              "h-12 block"
+              "w-max block space-y-3"
             )}>
           <input 
             type="file"
@@ -39,19 +43,61 @@ const InputBase = React.forwardRef<HTMLInputElement, InputProps>(
               onUpload(await ConvertFiles(Array.from(e.target.files)))
             }}
           />
-          {
-            props.asChild
-              ? props.children
-              : (
-                <Button 
-                  type="button"
-                  disabled={props.disabled}
-                  className="pointer-events-none w-fit px-8"
-                >
-                  Выбрать файл
-                </Button>
+          <div className="group relative block">
+            <div className="z-10 rounded-3xl group-hover:bg-black/15 transition-colors duration-300 absolute size-full" />
+            <UploadIcon className="absolute opacity-0 size-10 z-[11] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:opacity-100 transition-opacity duration-300" />
+            {
+              images?.length ? (
+                <>
+                  {
+                    images.map((img) => (
+                      <img
+                        src={img.b64}
+                        key={img.fileName}
+                        className={cn(aspectClassName, "size-60 rounded-3xl object-cover")}
+                        alt={img.fileName}
+
+                      />
+                    ))
+                  }
+                </>
+              ) : (
+                <>
+                    {
+                      !!imageIds && imageIds.length !== 0 ? (
+                        <>
+                          {
+                            imageIds.map((imgId) => (
+                              <Image
+                                width={2000}
+                                height={2000}
+                                className={cn(aspectClassName, "size-60 bg-white rounded-3xl")}
+                                src={imgId}
+                                key={imgId}
+                                alt={imgId}
+                              />
+                            ))
+                          }
+                        </>
+                      ) : (
+                        <div className={cn(
+                            "bg-primary animate-pulse size-60 rounded-3xl object-cover",
+                            aspectClassName
+                          )}>
+                        </div>
+                      )
+                    }
+                </>
               )
-          }
+            }
+          </div>
+          <Button 
+            type="button"
+            disabled={props.disabled}
+            className="pointer-events-none w-fit px-8"
+          >
+            Выбрать файл
+          </Button>
         </label>
       )
     }
@@ -92,7 +138,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger className={className} asChild>
             {
-              props.asChild
+              props.children
                 ? props.children
                 : <Button className="group/upload" variant="outline"><Upload className="size-6 transition-colors " /></Button>
             }

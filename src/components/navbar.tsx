@@ -1,5 +1,4 @@
 import { Logo } from "./logo";
-import { Button } from "./ui/button";
 import Link from "./ui/link";
 import { auth } from "~/server/auth";
 
@@ -19,7 +18,7 @@ export async function Navbar(){
         </div>
         {
           session 
-            ? <Button>{session.user.name}</Button>
+            ? <Link href={"/dashboard"} className="rounded-3xl" >{session.user.email}</Link>
             : <Link href="/auth/signin" className=" text-foreground/80 text-[16px]" variant="underline">Вход</Link>
         }
       </div>

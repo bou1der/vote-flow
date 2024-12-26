@@ -1,5 +1,6 @@
 import { ChartNoAxesCombined, HeartHandshake, Smartphone, SquareMousePointer, SwatchBook } from "lucide-react";
 import { ReactNode } from "react";
+import { Gradient } from "~/components/icons/gradient";
 import { cn } from "~/lib/client/utils";
 
 
@@ -7,7 +8,8 @@ import { cn } from "~/lib/client/utils";
 export function Our(){
 
   return (
-    <div className="container space-y-16 py-14 sm:py-20">
+    <div className="container relative space-y-16 py-14 sm:py-20">
+      <Gradient className="absolute translate-x-[400px] right-0 translate-y-52 opacity-70" />
       <div className="w-full space-y-4">
         <h1 className="text-center font-bold">Наши преимущества</h1>
         <p className="text-center max-w-[400px] mx-auto">Удобный, честный и быстрый сервис голосования.</p>

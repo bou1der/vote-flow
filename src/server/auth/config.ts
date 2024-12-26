@@ -2,7 +2,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import bcrypt from "bcrypt";
 import type { DefaultSession, NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import EmailProvider from "next-auth/providers/nodemailer";
+import EmailProvider from "next-auth/providers/email";
 import { env } from "~/env";
 
 import { eq } from "drizzle-orm";
@@ -26,6 +26,8 @@ const GetUser = async (email: string) => {
     where: (users, { eq }) => eq(users.email, email),
     columns: {
       id: true,
+      name:true,
+      image:true,
       email: true,
       role: true,
     },
@@ -50,6 +52,8 @@ export const authConfig = {
             eq(users.email, credentials.email as string),
           columns: {
             id: true,
+            name:true,
+            image:true,
             email: true,
             password: true,
           },
@@ -117,5 +121,5 @@ export const authConfig = {
       };
     },
   },
-  secret:env.NEXTAUTH_SECRET,
+  secret:env.AUTH_SECRET,
 } satisfies NextAuthConfig;

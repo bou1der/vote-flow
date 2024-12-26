@@ -12,7 +12,7 @@ export default function MainLayout({children}:
   return (
     <>
       <Navbar />
-      <main>
+      <main className="overflow-x-hidden">
         {children}
       </main>
       <Footer />

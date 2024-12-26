@@ -4,7 +4,7 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
-    NEXTAUTH_SECRET: z.string(),
+    AUTH_SECRET: z.string(),
 
     NODE_ENV: z
       .enum(["development", "test", "production"])
@@ -28,18 +28,15 @@ export const env = createEnv({
   client: {},
 
   runtimeEnv: {
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    AUTH_SECRET: process.env.AUTH_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
-
 
     EMAIL_HOST: process.env.EMAIL_HOST,
     EMAIL_PORT: process.env.EMAIL_PORT,
     EMAIL_USER: process.env.EMAIL_USER,
     EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
-
     MAIN_ADMIN_EMAIL: process.env.MAIN_ADMIN_EMAIL,
-
     S3_REGION: process.env.S3_REGION,
     S3_ENDPOINT: process.env.S3_ENDPOINT,
     S3_BUCKET: process.env.S3_BUCKET,
