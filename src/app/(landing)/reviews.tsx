@@ -55,14 +55,17 @@ export function Reviews(){
             values.map((item) => (
               <CarouselItem className="sm:basis-1/2 mr-8 p-6 bg-primary rounded-3xl space-y-3" key={item.image}>
                 <div className="w-full flex items-center gap-5">
-                  <Avatar className="size-16">
-                    <AvatarImage src={item.image} alt={item.name}>
-                      <Image src={`/api/file/${item.image}`}  alt={item.name}/>
-                    </AvatarImage>
-                    <AvatarFallback className="text-background">
-                      {item.name.split("")[0]}
-                    </AvatarFallback>
-                  </Avatar>
+                  {
+
+                  // <Avatar className="size-16">
+                  //   <AvatarImage src={item.image} alt={item.name}>
+                  //     <Image src={`/api/file/${item.image}`}  alt={item.name}/>
+                  //   </AvatarImage>
+                  //   <AvatarFallback className="text-background">
+                  //     {item.name.split("")[0]}
+                  //   </AvatarFallback>
+                  // </Avatar>
+                  }
                   <div>
                     <span className="text-white font-medium text-xl select-none">{item.name}</span>
                     <p className="select-none">{item.voites} голосов</p>

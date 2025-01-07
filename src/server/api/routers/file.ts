@@ -1,4 +1,3 @@
-import { getPlaiceholder } from "plaiceholder";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { FileSchema } from "~/lib/shared/types/file";
@@ -35,11 +34,6 @@ export const fileRouter = createTRPCRouter({
             .insert(files)
             .values({
               ...input,
-              placeholder: input.isImage
-                ? (
-                    await getPlaiceholder(buf)
-                  ).base64
-                : "",
               objectId: await ctx.s3.upload(
                 {
                   ...input,

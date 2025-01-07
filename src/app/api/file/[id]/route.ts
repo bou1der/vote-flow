@@ -10,6 +10,7 @@ export async function GET(
   context: { params:Promise<{ id: string }> },
 ) {
   const id = (await context.params).id
+
   const caller = createCaller(
     await createTRPCContext({
       headers: req.headers,
@@ -21,13 +22,14 @@ export async function GET(
       id: id,
     });
 
-    const stream = await s3.get(file.objectId);
-
-    return new Response(stream, {
+    return new Response(
+      Buffer.from(
+        (await s3.get(file.objectId)).split(";base64,").pop()!,
+        "base64"
+      ), {
       headers: {
         "Content-Type": file.contentType,
-        "Content-Disposition": `attachment; filename="${encodeURIComponent(file.fileName)}"`,
-        "Content-Encoding": "base64",
+        "Content-Disposition": `attachment; filename="${file.fileName}"`,
       },
     });
   } catch (cause) {

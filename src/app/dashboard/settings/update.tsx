@@ -7,7 +7,6 @@ import { toast } from "sonner"
 import { z } from "zod"
 import { Button } from "~/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem } from "~/components/ui/form"
-import Image from "~/components/ui/image"
 import { Input } from "~/components/ui/input"
 import { OnError } from "~/lib/client/on_error"
 import { updateUserSchema } from "~/lib/shared/types/user"
@@ -58,8 +57,7 @@ export function UpdateForm({session}:{
               </FormDescription>
               <FormControl>
                 <Input
-                  images={field.value ? [field.value] : []}
-                  imageIds={session?.user.image ? [session.user.image] : []}
+                  images={[field.value]}
                   onUpload={(f) => field.onChange(f[0]!)}
                   type="file"
                   accept="image/*"

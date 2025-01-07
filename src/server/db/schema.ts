@@ -17,7 +17,7 @@ export const createTable = pgTableCreator((name) => `project_${name}`);
 export const userRoleEnum = pgEnum("user_role", ["ADMIN", "USER"]);
 
 
-const statusEnum = pgEnum("status", [
+export const statusEnum = pgEnum("status", [
   "WAITING",
   "ACCEPTED",
   "CANCELED",
@@ -39,8 +39,19 @@ export const reviews = createTable("reviews", {
   anonymous: boolean("anonymous")
     .notNull()
     .default(false),
+  isDeleted: boolean("isDeleted")
+    .notNull()
+    .default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 })
+
+export const reviewRelations = relations(reviews, ({one}) => ({
+  user:one(users,{
+    fields:[reviews.userId],
+    references:[users.id],
+    relationName:"review_user"
+  })
+}))
 
 export const files = createTable("files", {
   id: varchar("id", { length: 255 })
@@ -68,7 +79,8 @@ export const users = createTable("user", {
     mode: "date",
     withTimezone: true,
   }).default(sql`CURRENT_TIMESTAMP`),
-  image: varchar("image", { length: 255 }),
+  image: varchar("image", { length: 255 })
+  .references(() => files.id),
   role: userRoleEnum("role").default("USER"),
 
   createdAt: timestamp("created_at", {
@@ -81,8 +93,13 @@ export const users = createTable("user", {
   }),
 });
 
-export const usersRelations = relations(users, ({ many }) => ({
+export const usersRelations = relations(users, ({ many, one }) => ({
   accounts: many(accounts),
+  avatar: one(files, {
+    fields:[users.image],
+    references:[files.id],
+    relationName:"user_avatar"
+  })
 }));
 
 export const accounts = createTable(

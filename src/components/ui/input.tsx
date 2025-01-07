@@ -13,16 +13,18 @@ import Image from "./image";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  images?:ProcessedFile[];
-  imageIds?:string[];
+  images?:ProcessedFile[] | string[];
+  // imageIds?:string[];
   aspectClassName?:string;
   onUpload?:(files:ProcessedFile[]) => void;
   preUpload?:(imageId:string) => void;
   asChild?:boolean;
 }
 
+
 const InputBase = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, images, aspectClassName, imageIds, type, onUpload, preUpload, ...props}, ref) => {
+  ({ className, images, aspectClassName, type, onUpload, preUpload, ...props}, ref) => {
+
     if(type === "file"){
       return (
         <label 
@@ -47,48 +49,23 @@ const InputBase = React.forwardRef<HTMLInputElement, InputProps>(
             <div className="z-10 rounded-3xl group-hover:bg-black/15 transition-colors duration-300 absolute size-full" />
             <UploadIcon className="absolute opacity-0 size-10 z-[11] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:opacity-100 transition-opacity duration-300" />
             {
-              images?.length ? (
-                <>
-                  {
-                    images.map((img) => (
-                      <img
-                        src={img.b64}
-                        key={img.fileName}
-                        className={cn(aspectClassName, "size-60 rounded-3xl object-cover")}
-                        alt={img.fileName}
+              images?.[0] && typeof images?.[0] === "string"
+                ? <Image
+                    width={2000}
+                    height={2000}
+                    className={cn(aspectClassName, "size-60 rounded-3xl overflow-hidden")}
+                    src={images[0]}
+                    key={images[0]}
+                    alt={images[0]}
+                  />
+                : <img
+                    src={(images?.[0] as ProcessedFile).b64}
+                    key={(images?.[0] as ProcessedFile).fileSize}
+                    className={cn(aspectClassName, "size-60 rounded-3xl object-cover")}
+                    alt={(images?.[0] as ProcessedFile).fileName}
 
-                      />
-                    ))
-                  }
-                </>
-              ) : (
-                <>
-                    {
-                      !!imageIds && imageIds.length !== 0 ? (
-                        <>
-                          {
-                            imageIds.map((imgId) => (
-                              <Image
-                                width={2000}
-                                height={2000}
-                                className={cn(aspectClassName, "size-60 bg-white rounded-3xl")}
-                                src={imgId}
-                                key={imgId}
-                                alt={imgId}
-                              />
-                            ))
-                          }
-                        </>
-                      ) : (
-                        <div className={cn(
-                            "bg-primary animate-pulse size-60 rounded-3xl object-cover",
-                            aspectClassName
-                          )}>
-                        </div>
-                      )
-                    }
-                </>
-              )
+                  />
+                
             }
           </div>
           <Button 

@@ -51,7 +51,7 @@ class S3Storage {
 
     const response = await this.s3Client.send(command);
     if (!response.Body) throw Error("S3 response body is undefined");
-    return response.Body.transformToString();
+    return await response.Body.transformToString();
   }
 
   async getSignedUrl(key: string): Promise<string> {

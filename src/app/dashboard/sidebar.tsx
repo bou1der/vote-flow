@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "~/components/logo";
 import Link from "~/components/ui/link";
 import { cn } from "~/lib/client/utils";
+import { CreateReviewForm } from "./create-review";
 
 export const routes = [
   {
@@ -20,17 +21,16 @@ export const routes = [
 ];
 
 export function Sidebar(){
-
   const pathname = usePathname()
-
-
   return (
-    <aside className="p-6 min-w-[280px] space-y-6 bg-primary">
+    <aside className="p-6 min-w-[280px] flex flex-col justify-stretch space-y-6 bg-primary">
       <div className="flex items-center justify-center">
         <Logo />
       </div>
+
       <div className="h-px w-full bg-gradient-to-r to-[#FFFFFF] from-[#999999]/20" />
-      <div className="space-y-6">
+
+      <div className="space-y-6 grow overflow-y-scroll">
         {
           routes.map((route) => (
             <Link
@@ -44,6 +44,8 @@ export function Sidebar(){
           ))
         }
       </div>
+
+      <CreateReviewForm />
     </aside>
   )
 
