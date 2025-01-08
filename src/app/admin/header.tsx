@@ -5,7 +5,7 @@ import { useMemo } from "react";
 
 
 
-export function DashboardHeader(){
+export function AdminHeader(){
   const pathname = usePathname()
   const currentRoute = useMemo(
     () => routes.find((route) => route.href === pathname)

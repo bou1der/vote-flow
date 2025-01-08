@@ -1,4 +1,4 @@
-import { relations, sql } from "drizzle-orm";
+import { Many, relations, sql } from "drizzle-orm";
 import {
   boolean,
   index,
@@ -14,8 +14,106 @@ import type { AdapterAccount } from "next-auth/adapters";
 
 export const createTable = pgTableCreator((name) => `project_${name}`);
 
-export const userRoleEnum = pgEnum("user_role", ["ADMIN", "USER"]);
 
+export const votes = createTable("votes", {
+  userId: varchar("userId", { length: 255 })
+    .notNull(),
+  votingId:varchar("votingId", {length:255})
+    .notNull(),
+  answerId:varchar("answerId", {length:255})
+    .notNull(),
+
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+
+}, (vote) => ({
+    compoundKey: primaryKey({
+      columns:[vote.userId, vote.votingId]
+    }),
+    userIdx: index("user_vote_idx").on(
+      vote.userId,
+    ),
+    voteIdx: index("event_vote_idx").on(
+      vote.votingId,
+    ),
+  })
+);
+
+export const voteRelations = relations(votes, ({one}) => ({
+  user:one(users, {
+    fields:[votes.userId],
+    references:[users.id],
+    relationName:"vote_user",
+  }),
+  voting:one(votings, {
+    fields:[votes.votingId],
+    references:[votings.id],
+    relationName:"voting_vote",
+  }),
+  answer:one(answers, {
+    fields:[votes.answerId],
+    references:[answers.id],
+    relationName:"voting_answer",
+  }),
+}))
+
+export const answers = createTable("answers", {
+  id: varchar("id", { length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  description: text("description")
+    .notNull(),
+  votingId: varchar("votingId", { length: 255 })
+    .notNull()
+    .references(() => votings.id),
+})
+
+export const answerRelation = relations(answers, ({one, many}) => ({
+  voting: one(votings,{
+    fields:[answers.votingId],
+    references:[votings.id],
+    relationName:"voting_answer"
+  }),
+  votes: many(votes)
+}))
+
+export const votings = createTable("votings", {
+  id: varchar("id", { length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+
+  imageId: varchar("imageId", { length: 255 })
+    .notNull()
+    .references(() => files.id),
+  question: varchar("question", {length:255})
+    .notNull(),
+  description: text("description")
+    .notNull(),
+
+  from: timestamp("from", {withTimezone:true})
+    .notNull(),
+  to: timestamp("to", {withTimezone:true})
+    .notNull(),
+
+  isDeleted: boolean("isDeleted")
+    .notNull()
+    .default(false),
+  createdBy: varchar("createdBy", { length: 255 })
+    .notNull()
+    .references(() => users.id),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+})
+
+export const votingRelations = relations(votings, ({ one, many }) => ({
+  answers:many(answers),
+  votes: many(votes),
+  owner: one(users, {
+    fields:[votings.createdBy],
+    references:[users.id],
+    relationName:"voting_owner",
+  })
+}))
 
 export const statusEnum = pgEnum("status", [
   "WAITING",
@@ -66,6 +164,8 @@ export const files = createTable("files", {
   createdById: varchar("created_by", { length: 255 }).notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+export const userRoleEnum = pgEnum("user_role", ["ADMIN", "USER"]);
 
 export const users = createTable("user", {
   id: varchar("id", { length: 255 })

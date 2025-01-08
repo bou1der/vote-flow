@@ -8,38 +8,23 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import { files } from "~/server/db/schema";
-import sharp from "sharp";
-import { z } from "zod";
 
 export const fileRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(
-      FileSchema.merge(
-        z.object({
-          isImage: z.boolean().default(false),
-        }),
-      ),
-    )
+    .input(FileSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        let buf = Buffer.from(
-          input.b64.split(";base64,")[1] ?? input.b64,
-          "base64",
-        );
-        if (input.isImage) {
-          buf = await sharp(buf).webp().toBuffer();
-        }
         const { id } = (
           await ctx.db
             .insert(files)
             .values({
               ...input,
+              createdById: ctx.session.user.id,
               objectId: await ctx.s3.upload(
                 {
                   ...input,
-                  contentType: input.isImage ? "image/webp" : input.contentType,
+                  contentType: input.contentType,
                 },
-                buf,
               ),
             })
             .returning()

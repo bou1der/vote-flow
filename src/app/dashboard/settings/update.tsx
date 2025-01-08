@@ -26,7 +26,6 @@ export function UpdateForm({session}:{
   const UpdateUserMutation = api.user.updateSelf.useMutation({
     onSuccess:() => {
       router.refresh()
-      form.reset()
       toast.success("Профиль успешно обновлен")
     },
     onError:(err) => {
@@ -50,21 +49,23 @@ export function UpdateForm({session}:{
         <FormField
           control={form.control}
           name="image"
-          render={({field}) => (
-            <FormItem>
-              <FormDescription className=" text-lg text-white opacity-100">
-                Фото
-              </FormDescription>
-              <FormControl>
-                <Input
-                  images={[field.value]}
-                  onUpload={(f) => field.onChange(f[0]!)}
-                  type="file"
-                  accept="image/*"
-                />
-              </FormControl>
-            </FormItem>
-          )}
+          render={({field}) => {
+            return (
+              <FormItem>
+                <FormDescription className=" text-lg text-white opacity-100">
+                  Фото
+                </FormDescription>
+                <FormControl>
+                  <Input
+                    images={field.value}
+                    onUpload={(f) => field.onChange(f[0]!)}
+                    type="file"
+                    accept="image/*"
+                  />
+                </FormControl>
+              </FormItem>
+            )
+          }}
         />
         <FormField
           control={form.control}

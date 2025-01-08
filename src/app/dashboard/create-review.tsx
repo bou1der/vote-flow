@@ -1,6 +1,6 @@
 'use client'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -29,6 +29,10 @@ export function CreateReviewForm(){
       anonymous: false,
     }
   })
+
+  useEffect(() => {
+    setTimeout(() => form.setValue("anonymous", false), 800)
+  }, [form.watch("anonymous")])
 
   const CreateReviewMutation = api.review.create.useMutation({
     onSuccess:() => {

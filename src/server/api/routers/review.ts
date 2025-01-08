@@ -29,6 +29,7 @@ export const reviewRouter = createTRPCRouter({
     return await ctx.db.select({
       id:reviews.id,
       description:reviews.description,
+      status:reviews.status,
       user:{
         id:users.id,
         imageId:users.image,

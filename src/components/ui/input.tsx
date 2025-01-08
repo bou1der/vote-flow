@@ -13,8 +13,7 @@ import Image from "./image";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  images?:ProcessedFile[] | string[];
-  // imageIds?:string[];
+  images?:ProcessedFile | string;
   aspectClassName?:string;
   onUpload?:(files:ProcessedFile[]) => void;
   preUpload?:(imageId:string) => void;
@@ -49,22 +48,23 @@ const InputBase = React.forwardRef<HTMLInputElement, InputProps>(
             <div className="z-10 rounded-3xl group-hover:bg-black/15 transition-colors duration-300 absolute size-full" />
             <UploadIcon className="absolute opacity-0 size-10 z-[11] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:opacity-100 transition-opacity duration-300" />
             {
-              images?.[0] && typeof images?.[0] === "string"
+              images && typeof images === "string"
                 ? <Image
                     width={2000}
                     height={2000}
                     className={cn(aspectClassName, "size-60 rounded-3xl overflow-hidden")}
-                    src={images[0]}
-                    key={images[0]}
-                    alt={images[0]}
+                    src={images}
+                    key={images}
+                    alt={images}
                   />
-                : <img
-                    src={(images?.[0] as ProcessedFile).b64}
-                    key={(images?.[0] as ProcessedFile).fileSize}
+                : images ? <img
+                    src={(images as ProcessedFile).b64}
+                    key={(images as ProcessedFile).fileSize}
                     className={cn(aspectClassName, "size-60 rounded-3xl object-cover")}
-                    alt={(images?.[0] as ProcessedFile).fileName}
+                    alt={(images as ProcessedFile).fileName}
 
                   />
+                  : <div className={cn(aspectClassName, "size-60 rounded-3xl bg-white/10 border border-white/20 flex justify-center items-center")} />
                 
             }
           </div>

@@ -69,6 +69,40 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+
+  ul {
+    @apply list-disc opacity-100 pl-4;
+  }
+
+  ol {
+    @apply list-decimal text-white opacity-100 pl-4;
+  }
+
+
+  .tiptap {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+
+    blockquote {
+      @apply p-6 bg-white/10 my-2 rounded-2xl;
+
+      ul {
+        @apply opacity-100;
+      }
+
+      ol {
+        @apply opacity-100;
+      }
+
+      p {
+        @apply opacity-100;
+      }
+    }
+
+    @apply focus-visible:outline-none
+  }
 }
 
 @layer base {
@@ -110,6 +144,21 @@
   }
 
 
+}
+
+@layer utilities {
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
 }
 
 @animate {
