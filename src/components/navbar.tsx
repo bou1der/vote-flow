@@ -13,7 +13,7 @@ export async function Navbar(){
         <Logo />
         <div>
           <Link variant="underline" className="text-foreground/80 text-[16px]" href="/">Главная</Link>
-          <Link variant="underline" className="text-foreground/80 text-[16px]" href="/votes">Голосования</Link>
+          <Link variant="underline" className="text-foreground/80 text-[16px]" href="/votings">Голосования</Link>
           <Link variant="underline" className="text-foreground/80 text-[16px]" href="/about">О проекте</Link>
         </div>
         {

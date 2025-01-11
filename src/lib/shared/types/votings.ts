@@ -49,5 +49,18 @@ export const VotingSchema = z.object({
     .max(5)
 })
 
+export const votingStatusEnum = z.enum([
+  "OPEN",
+  "CLOSED",
+])
 
-export type SelfVoting = inferRouterOutputs<AppRouter>["voting"]["getSelf"][number]
+export type VotingStatus = z.infer<typeof votingStatusEnum>
+
+export const VotingsFilters = z.object({
+  self:z.boolean().optional().default(false),
+  status: votingStatusEnum.nullish().optional(),
+}).optional()
+
+
+export type OneVoting = inferRouterOutputs<AppRouter>["voting"]["getOne"]
+export type AllVoting = inferRouterOutputs<AppRouter>["voting"]["getAll"][number]

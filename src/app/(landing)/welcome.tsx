@@ -12,7 +12,7 @@ export function Welcome(){
           <h1 className="text-center font-bold">Создавайте темы и голосуйте за лучшее!</h1>
           <p className="text-center max-w-[638px]">Создавайте темы, выбирайте лучшие идеи и участвуйте в честных голосованиях. Ваш голос имеет значение!</p>
         </div>
-        <Link href="/" className="rounded-3xl sm:w-fit w-full text-lg px-10">Перейти к голосованию</Link>
+        <Link href="/votings" className="rounded-3xl sm:w-fit w-full text-lg px-10">Перейти к голосованию</Link>
       </div>
     </div>
   )

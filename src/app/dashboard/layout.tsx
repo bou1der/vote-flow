@@ -22,7 +22,7 @@ export default async function DashboardLayout({
   return (
     <div className="w-dvw h-dvh flex gap-6">
       <Sidebar />
-      <div className="grow max-h-screen overflow-y-scroll no-scrollbar px-6">
+      <div className="grow pb-4 max-h-screen overflow-y-scroll no-scrollbar px-6">
         <DashboardHeader />
         {children}
       </div>
