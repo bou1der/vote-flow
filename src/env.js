@@ -22,6 +22,8 @@ export const env = createEnv({
     S3_ACCESS_KEY: z.string(),
     S3_SECRET_KEY: z.string(),
 
+    COINGATE_API:z.string(),
+
     REDIS_URL: z.string().url(),
   },
 
@@ -31,6 +33,8 @@ export const env = createEnv({
     AUTH_SECRET: process.env.AUTH_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
+
+    COINGATE_API: process.env.COINGATE_API,
 
     EMAIL_HOST: process.env.EMAIL_HOST,
     EMAIL_PORT: process.env.EMAIL_PORT,

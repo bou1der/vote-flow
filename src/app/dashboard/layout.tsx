@@ -23,8 +23,10 @@ export default async function DashboardLayout({
     <div className="w-dvw h-dvh flex gap-6">
       <Sidebar />
       <div className="grow pb-4 max-h-screen overflow-y-scroll no-scrollbar px-6">
-        <DashboardHeader />
-        {children}
+        <div className="size-full flex flex-col justify-stretch ">
+          <DashboardHeader />
+          {children}
+        </div>
       </div>
     </div>
   );

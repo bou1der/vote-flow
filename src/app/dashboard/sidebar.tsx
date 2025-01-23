@@ -1,6 +1,6 @@
 'use client'
 
-import { Settings, Vote } from "lucide-react";
+import { Settings, Vote, Wallet } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Logo } from "~/components/logo";
 import Link from "~/components/ui/link";
@@ -14,10 +14,15 @@ export const routes = [
     icon:<Vote />,
   },
   {
+    title:"Кошельки",
+    href:"/dashboard/wallets",
+    icon:<Wallet />,
+  },
+  {
     title:"Настройки",
     href:"/dashboard/settings",
     icon:<Settings />,
-  }
+  },
 ];
 
 export function Sidebar(){

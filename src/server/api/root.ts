@@ -3,6 +3,7 @@ import { fileRouter } from "./routers/file";
 import { userRouter } from "./routers/user";
 import { reviewRouter } from "./routers/review";
 import { votingRouter } from "./routers/voting";
+import { cryptoPayments } from "./routers/crypto";
 
 
 export const appRouter = createTRPCRouter({

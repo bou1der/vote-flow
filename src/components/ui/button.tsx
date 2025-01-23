@@ -3,6 +3,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
 import { cn } from "~/lib/client/utils";
+import Loader from "./loader";
 
 const buttonVariants = cva(
   "inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -38,12 +39,23 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  loading?: boolean;
   chevron?:boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, chevron, asChild = false, ...props }, ref) => {
+  ({ className, variant, loading, children, size, chevron, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
+
+    function Shevron({children}:{children:React.ReactNode}){
+      return (
+        <span className="flex items-center justify-between w-full">
+          {children}
+          <ChevronDown className="size-5" />
+        </span>
+      )
+    }
+
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
@@ -51,13 +63,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {
-          chevron ? 
-          (
-            <span className="flex items-center justify-between w-full">
-              {props.children}
-              <ChevronDown className="size-5" />
-            </span>
-          ): props.children
+          loading
+            ? (<Loader size="sm" />)
+            : chevron
+              ? (<Shevron>{children}</Shevron>)
+              : children
         }
       </Comp>
     );
