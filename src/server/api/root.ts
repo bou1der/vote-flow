@@ -4,6 +4,7 @@ import { userRouter } from "./routers/user";
 import { reviewRouter } from "./routers/review";
 import { votingRouter } from "./routers/voting";
 import { cryptoPayments } from "./routers/crypto";
+import { yookassaRouter } from "./routers/yookassa";
 
 
 export const appRouter = createTRPCRouter({
@@ -11,6 +12,7 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   review: reviewRouter,
   voting: votingRouter,
+  yookassa: yookassaRouter,
 });
 
 export type AppRouter = typeof appRouter;

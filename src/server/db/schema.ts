@@ -1,4 +1,4 @@
-import { Many, relations, sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   index,
@@ -14,6 +14,67 @@ import type { AdapterAccount } from "next-auth/adapters";
 
 export const createTable = pgTableCreator((name) => `project_${name}`);
 
+export const donationsTypeEnum = pgEnum("donationsEnum", [
+  "CRYPTO",
+  "FIAT",
+])
+
+export const donationStatusEnum = pgEnum("donationStatusEnum", [
+  "PENDING",
+  "CANCELED",
+  "COMPLITED",
+])
+
+export const donations = createTable("donations", {
+  id: varchar("id", { length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  transactionId: varchar("transaction_id", { length: 255 })
+    .unique(),
+  idempotencyKey: varchar("idempotency_key", { length: 255 })
+    .unique(),
+
+  confirmationUrl: text("confirmation_url"),
+  type: donationsTypeEnum("donation_type")
+    .notNull(),
+  status: donationStatusEnum("donation_status")
+    .notNull()
+    .default("PENDING"),
+
+  senderId: varchar("sender_id", { length: 255 })
+    .references(() => users.id),
+
+  recipientId: varchar("recipient_id", { length: 255 })
+    .notNull()
+    .references(() => users.id),
+
+  votingId: varchar("voting_id", { length: 255 })
+    .notNull()
+    .references(() => votings.id),
+
+  amount: integer("amount")
+    .notNull(),
+  comment: varchar("comment", {length:160}),
+
+  createdAt: timestamp("created_at",{
+    withTimezone:true,
+    mode:"date",
+  })
+    .notNull()
+    .defaultNow(),
+})
+
+export const wallets = createTable("wallets", {
+  id: varchar("id", { length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: varchar("userId", { length: 255 })
+    .notNull(),
+  wallet: text("wallet")
+    .notNull(),
+})
 
 export const votes = createTable("votes", {
   userId: varchar("userId", { length: 255 })
@@ -179,6 +240,9 @@ export const users = createTable("user", {
     mode: "date",
     withTimezone: true,
   }).default(sql`CURRENT_TIMESTAMP`),
+  balance: integer("balance")
+    .notNull()
+    .default(0),
   image: varchar("image", { length: 255 })
   .references(() => files.id),
   role: userRoleEnum("role").default("USER"),
@@ -199,7 +263,7 @@ export const usersRelations = relations(users, ({ many, one }) => ({
     fields:[users.image],
     references:[files.id],
     relationName:"user_avatar"
-  })
+  }),
 }));
 
 export const accounts = createTable(

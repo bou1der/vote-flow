@@ -3,7 +3,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { VotingSchema, VotingsFilters } from "~/lib/shared/types/votings";
 import { createCaller } from "../root";
 import { answers, votes, votings } from "~/server/db/schema";
-import { and, count, desc, eq, InferSelectModel, sql } from "drizzle-orm";
+import { and, count, desc, eq, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { isAfter, isBefore } from "date-fns";
@@ -57,7 +57,7 @@ export const votingRouter = createTRPCRouter({
     .from(votings)
     .where(and(
       eq(votings.isDeleted, false),
-      eq(votings.createdBy, ctx.session!.user.id).if(input?.self && ctx.session)
+      input?.self && ctx.session ? eq(votings.createdBy, ctx.session!.user.id) : undefined
     ))
     .orderBy(desc(votings.createdAt))
   }),

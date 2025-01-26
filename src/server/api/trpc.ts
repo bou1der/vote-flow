@@ -6,6 +6,7 @@ import { auth } from "~/server/auth";
 import { db } from "~/server/db";
 import { redis } from "../redis";
 import { s3 } from "../s3";
+import { yookassa } from "../payments/yookassa";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await auth();
@@ -13,6 +14,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
   return {
     db,
     redis,
+    yookassa,
     s3,
     session,
     ...opts,

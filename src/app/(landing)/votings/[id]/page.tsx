@@ -4,6 +4,8 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 import Editor from "~/components/ui/editor"
 import { api } from "~/trpc/server"
 import { VoteSection } from "./vote-section"
+import { auth } from "~/server/auth"
+import { DonatSection } from "./donation"
 
 
 
@@ -14,10 +16,10 @@ export default async function VotingPage({params}:
     }>
   }){
   const id = (await params).id
+  const session = await auth()
   const voting = await api.voting.getOne({id})
+
   
-
-
   return (
     <div className="container min-h-screen">
       <div className="space-y-6">
@@ -37,15 +39,23 @@ export default async function VotingPage({params}:
           </BreadcrumbList>
         </Breadcrumb>
         <h1 className="font-semibold">{voting.question}</h1>
-        <span className="text-sm font-semibold px-6 py-3 bg-primary w-max rounded-3xl ">
+        <div className="flex gap-2">
           {
-            isBefore(new Date(), voting.from)
-              ? `Начало черeз ${formatDistance(new Date(), voting.from, {locale:ru})}`
-              : `Конец через ${formatDistance(new Date(), voting.to, {locale:ru})}`
+            session?.user.id === voting.createdBy
+              ? null 
+              : <DonatSection votingId={voting.id} />
           }
-        </span>
 
-        <Editor className="my-16 border-none bg-white/0" text={voting.description} disabled />
+          <span className="text-sm font-semibold px-6 py-3 bg-primary w-max rounded-3xl ">
+            {
+              isBefore(new Date(), voting.from)
+                ? `Начало черeз ${formatDistance(new Date(), voting.from, {locale:ru})}`
+                : `Конец через ${formatDistance(new Date(), voting.to, {locale:ru})}`
+            }
+          </span>
+        </div>
+
+        <Editor className="my-10 border-none bg-white/0" text={voting.description} disabled />
         <VoteSection voting={voting} />
       </div>
     </div>

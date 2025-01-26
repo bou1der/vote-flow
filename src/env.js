@@ -22,19 +22,24 @@ export const env = createEnv({
     S3_ACCESS_KEY: z.string(),
     S3_SECRET_KEY: z.string(),
 
-    COINGATE_API:z.string(),
+    YOOKASSA_API:z.string(),
+    YOOKASSA_SHOP_ID: z.string(),
 
     REDIS_URL: z.string().url(),
   },
 
-  client: {},
+  client: {
+    NEXT_PUBLIC_URL: z.string(),
+  },
 
   runtimeEnv: {
+    NEXT_PUBLIC_URL:process.env.NEXT_PUBLIC_URL,
     AUTH_SECRET: process.env.AUTH_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
 
-    COINGATE_API: process.env.COINGATE_API,
+    YOOKASSA_API:process.env.YOOKASSA_API,
+    YOOKASSA_SHOP_ID:process.env.YOOKASSA_SHOP_ID,
 
     EMAIL_HOST: process.env.EMAIL_HOST,
     EMAIL_PORT: process.env.EMAIL_PORT,

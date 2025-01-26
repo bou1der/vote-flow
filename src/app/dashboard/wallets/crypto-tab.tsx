@@ -1,14 +1,15 @@
-'use client'
+'use ton'
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { isWalletInfoRemote, WalletInfo } from "@tonconnect/sdk";
 import { useState } from "react";
 import QRCode from "react-qr-code";
 import { Button } from "~/components/ui/button";
 import { TabsContent } from "~/components/ui/tabs";
-import { ton } from "~/lib/client/ton";
+import { useTonWallet } from "~/hooks/ton";
 
 
 export function CryptoTab(){
+  const { ton } = useTonWallet()
 
   const [currentWallet, setCurrentWallet] = useState<WalletInfo | undefined>(undefined)
 
@@ -56,6 +57,7 @@ export function CryptoTab(){
     wallet:WalletInfo
   }
 ){
+  const { ton } = useTonWallet()
 
   return (
     <div className="grow">

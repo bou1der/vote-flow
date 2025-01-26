@@ -1,10 +1,12 @@
 'use client'
 
-import TonConnector, { IStorage } from "@tonconnect/sdk"
-
+import TonConnector, { IStorage, isWalletInfoRemote } from "@tonconnect/sdk"
+import { env } from "~/env"
 
 const storage:IStorage = {
   async setItem(key, value){
+    const account = JSON.parse(value)
+
     localStorage.setItem(key, value)
     return
   },
@@ -16,7 +18,10 @@ const storage:IStorage = {
     return
   },
 }
+
 export const ton = new TonConnector({
-  storage
+  manifestUrl:`${env.NEXT_PUBLIC_URL}/tonconnect-manifest.json`,
+  storage,
 })
+
 ton.restoreConnection()

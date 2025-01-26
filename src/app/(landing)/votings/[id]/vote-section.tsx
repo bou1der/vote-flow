@@ -33,7 +33,7 @@ export function VoteSection({voting}:{
   return (
     <div className="space-y-4">
       <h4 className="font-semibold text-2xl">Вопрос или тема?</h4>
-      <p>Проголосовало {sum} человек</p>
+      <p>Проголосовало всего: {sum}</p>
 
       <div className="w-full space-y-6 my-14">
         {
