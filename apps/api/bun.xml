@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="bun test" tests="8" assertions="7" failures="4" skipped="0" time="2.577131878">
+  <testsuite name="src/tests/server/api/user.test.ts" tests="8" assertions="7" failures="4" skipped="0" time="0.069" hostname="nixos">
+    <testcase name="auth.middleware.authorized" classname="user" time="0.049996356" file="src/tests/server/api/user.test.ts" assertions="0">
+      <failure type="AssertionError" />
+    </testcase>
+    <testcase name="auth.middleware.unauthorized" classname="user" time="0.001999854" file="src/tests/server/api/user.test.ts" assertions="1" />
+    <testcase name="auth.unprotected" classname="user" time="0.009999271" file="src/tests/server/api/user.test.ts" assertions="2" />
+    <testcase name="auth.unauthorized" classname="user" time="0.0029997820000000003" file="src/tests/server/api/user.test.ts" assertions="2" />
+    <testcase name="auth.user" classname="user" time="0.004999636" file="src/tests/server/api/user.test.ts" assertions="0">
+      <failure type="AssertionError" />
+    </testcase>
+    <testcase name="auth.admin" classname="user" time="0.002999781" file="src/tests/server/api/user.test.ts" assertions="0">
+      <failure type="AssertionError" />
+    </testcase>
+    <testcase name="auth.admin.notAdmin" classname="user" time="0.002999781" file="src/tests/server/api/user.test.ts" assertions="0">
+      <failure type="AssertionError" />
+    </testcase>
+    <testcase name="auth.admin.unauthorized" classname="user" time="0.000999927" file="src/tests/server/api/user.test.ts" assertions="2" />
+  </testsuite>
+</testsuites>

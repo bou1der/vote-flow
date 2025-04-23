@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="bun test" tests="7" assertions="9" failures="4" skipped="0" time="11.95402614">
+  <testsuite name="src/tests/server/api/file.test.ts" tests="7" assertions="9" failures="4" skipped="0" time="7.654" hostname="nixos">
+    <testcase name="get.notFound" classname="file" time="0.025998072" file="src/tests/server/api/file.test.ts" assertions="1" />
+    <testcase name="create.notImage" classname="file" time="1.0889192399999998" file="src/tests/server/api/file.test.ts" assertions="1">
+      <failure type="AssertionError" />
+    </testcase>
+    <testcase name="get.unauthorized" classname="file" time="1.123916645" file="src/tests/server/api/file.test.ts" assertions="1">
+      <failure type="AssertionError" />
+    </testcase>
+    <testcase name="get.autorized" classname="file" time="1.137915608" file="src/tests/server/api/file.test.ts" assertions="1">
+      <failure type="AssertionError" />
+    </testcase>
+    <testcase name="create.image" classname="file" time="2.159839818" file="src/tests/server/api/file.test.ts" assertions="1">
+      <failure type="AssertionError" />
+    </testcase>
+    <testcase name="create.image.invalid" classname="file" time="1.052921912" file="src/tests/server/api/file.test.ts" assertions="2" />
+    <testcase name="create.image.tooBig" classname="file" time="1.070920578" file="src/tests/server/api/file.test.ts" assertions="2" />
+  </testsuite>
+</testsuites>

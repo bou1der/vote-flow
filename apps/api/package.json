@@ -1,0 +1,55 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --name-separator '!' --names 'compiler!server' -c 'blue,magenta' 'webpack --watch' 'bun run --hot src/app/index.ts'",
+    "build": "webpack",
+    "start": "bun run ./dist/main.js",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test --reporter=junit --reporter-outfile=./bun.xml --preload ./src/tests/setup.ts --coverage",
+    "webhook": "npx bun src/server/telegram/webhook.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^1.2.0",
+    "@react-email/components": "^0.0.33",
+    "@a2seven/yoo-checkout": "^1.1.4",
+    "@react-email/render": "^1.0.5",
+    "bun": "^1.2.5",
+    "drizzle-orm": "^0.40.0",
+    "elysia": "^1.2.25",
+    "mime-types": "^2.1.35",
+    "nodemailer": "^6.10.0",
+    "plaiceholder": "^3.0.0",
+    "qrcode": "^1.5.4",
+    "shared": "workspace:*",
+    "telegraf": "^4.16.3",
+    "telegram": "^2.26.22",
+    "utils": "workspace:*"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/apps/api/src/app/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/apps/api/src/app/types.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.2.17",
+    "@repo/typescript-config": "*",
+    "@types/mime-types": "^2.1.4",
+    "@types/node": "^22.13.9",
+    "@types/nodemailer": "^6.4.17",
+    "@types/qrcode": "^1.5.5",
+    "bun-plugin-dts": "^0.3.0",
+    "concurrently": "^9.1.2",
+    "typescript": "5.8.2"
+  }
+}

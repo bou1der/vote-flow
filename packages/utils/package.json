@@ -1,0 +1,17 @@
+{
+  "name": "utils",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {},
+  "exports": {
+    "./logger": {
+      "default": "./src/logger/index.ts"
+    }
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*"
+  },
+  "dependencies": {
+    "winston": "^3.17.0"
+  }
+}
