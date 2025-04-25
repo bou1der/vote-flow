@@ -9,8 +9,15 @@ import { logger } from "utils/logger";
 import { redis } from "../redis";
 import { email, VerificationEmail, SignUpEmail, ResetPasswordEmail } from "../mailer";
 import { env } from "../env";
+import { env as globalEnv } from "utils/env";
 
 export const auth = betterAuth({
+	advanced: {
+		crossSubDomainCookies: {
+			enabled: true,
+			domain: `.${globalEnv.NEXT_PUBLIC_DOMAIN}`,
+		},
+	},
 	database: drizzleAdapter(db, {
 		provider: "pg",
 	}),
@@ -90,7 +97,7 @@ export const auth = betterAuth({
 			adminRole: "admin",
 		}) as BetterAuthPlugin,
 	],
-	// trustedOrigins: ["http://localhost:3001"],
+	trustedOrigins: [`https://web.${globalEnv.NEXT_PUBLIC_DOMAIN}`],
 });
 
 export type Auth = typeof auth;

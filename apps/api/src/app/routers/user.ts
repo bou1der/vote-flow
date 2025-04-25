@@ -1,8 +1,10 @@
-import Elysia, { type Context, error } from "elysia";
+import Elysia, { type Context, error, t } from "elysia";
 import { userMiddleware } from "../middleware/auth";
-import type { UserRole } from "shared/types/user";
-import cors from "@elysiajs/cors";
+import { UserSchema, type UserRole } from "shared/types/user";
 import { auth } from "~/lib/auth";
+import { db, user } from "~/lib/db";
+import { api } from "..";
+import { eq } from "drizzle-orm";
 
 export const userService = new Elysia({ name: "user/service" })
 	.derive({ as: "global" }, async ({ headers }) => await userMiddleware(headers))
@@ -45,5 +47,32 @@ export const betterAuthView = (context: Context) => {
 
 export const userRouter = new Elysia({ prefix: "/user" })
 	.use(userService)
-	.use(cors())
-	.get("/", ({ session }) => session);
+	.get("/", ({ session }) => session)
+	.patch(
+		"/",
+		async ({ body, session, headers }) => {
+			let imageId: string | undefined = undefined;
+			if (body.image) {
+				({ data: (imageId as unknown as string | null) } = await api.file.index.post(
+					{ file: body.image },
+					{
+						query: {
+							isImage: true,
+						},
+						headers,
+					},
+				));
+			}
+			await db
+				.update(user)
+				.set({
+					...body,
+					image: imageId,
+				})
+				.where(eq(user.id, session!.user.id));
+		},
+		{
+			isSignedIn: true,
+			body: t.Partial(UserSchema),
+		},
+	);

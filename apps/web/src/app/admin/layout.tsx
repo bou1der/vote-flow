@@ -1,12 +1,15 @@
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import type React from "react";
+import { Sidebar } from "./sidebar";
+import { AdminHeader } from "./header";
+import type { ReactNode } from "react";
 import { authClient } from "~/lib/client/auth-client";
+import { headers } from "next/headers";
 
 export default async function AdminLayout({
 	children,
 }: {
-	children: React.ReactNode;
+	children: ReactNode;
 }) {
 	const { data: session } = await authClient.getSession({
 		fetchOptions: {
@@ -14,9 +17,17 @@ export default async function AdminLayout({
 		},
 	});
 
-	if (session?.user.role !== "admin") {
-		redirect("/auth/signin");
+	if (session?.user.role !== "ADMIN") {
+		notFound();
 	}
 
-	return children;
+	return (
+		<div className="w-dvw h-dvh flex gap-6">
+			<Sidebar />
+			<div className="grow max-h-screen overflow-y-scroll no-scrollbar px-6">
+				<AdminHeader />
+				{children}
+			</div>
+		</div>
+	);
 }

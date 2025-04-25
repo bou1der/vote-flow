@@ -3,13 +3,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "ui/components/button";
 import { Form, FormControl, FormField, FormItem } from "ui/components/form";
 import { Input, PasswordInput } from "ui/components/input";
 import { authClient } from "~/lib/client/auth-client";
 import { OnError } from "~/lib/client/on_error";
+import Link from "ui/components/link";
 
 export default function SignInPage() {
 	const loginSchema = z.object({
@@ -36,10 +36,10 @@ export default function SignInPage() {
 
 	async function onSubmit(data: z.infer<typeof loginSchema>) {
 		await authClient.signIn.email(data, {
-			onSuccess() {
+			onSuccess(ctx) {
 				router.push("/");
 			},
-			onError(error) {
+			onError(error: Error) {
 				console.error(error);
 				toast.error("Не удалось войти в аккаунт");
 			},
@@ -74,6 +74,9 @@ export default function SignInPage() {
 								</FormItem>
 							)}
 						/>
+						<Link className="px-0" variant={"link"} href="/auth/signup">
+							Нет аккаунта?
+						</Link>
 						<Button type="submit" className="w-full">
 							Войти
 						</Button>

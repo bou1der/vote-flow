@@ -5,17 +5,17 @@ import { useEffect } from "react";
 import { authClient } from "~/lib/client/auth-client";
 
 export default function LogoutPage() {
-  const router = useRouter();
+	const router = useRouter();
 
-  useEffect(() => {
-    authClient.signOut({
-      fetchOptions: {
-        onSuccess() {
-          router.push("/");
-        },
-      },
-    });
-  }, []);
+	useEffect(() => {
+		authClient.signOut({
+			fetchOptions: {
+				onSuccess() {
+					router.push("/");
+				},
+			},
+		});
+	}, [router]);
 
-  return null;
+	return null;
 }

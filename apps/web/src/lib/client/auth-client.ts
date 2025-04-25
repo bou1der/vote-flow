@@ -1,10 +1,10 @@
 import { createAuthClient } from "better-auth/client";
 import { inferAdditionalFields } from "better-auth/client/plugins";
 import type { Auth } from "api";
-import { env } from "~/env";
+import { env } from "utils/env";
 
 export const authClient = createAuthClient({
-	baseURL: `${env.NEXT_PUBLIC_API_URL}`,
+	baseURL: `${env.NEXT_PUBLIC_PROTOCOL}://api.${env.NEXT_PUBLIC_DOMAIN}`,
 	plugins: [inferAdditionalFields<Auth>()],
 });
 

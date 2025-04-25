@@ -66,9 +66,7 @@ export const fileRouter = new Elysia({ prefix: "/file" })
 				});
 			});
 
-			return {
-				id: id!,
-			};
+			return id!;
 		},
 		{
 			body: t.Object({

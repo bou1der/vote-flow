@@ -1,4 +1,4 @@
-import { type VariantProps } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
 import NextLink from "next/link";
 import { forwardRef, type ComponentPropsWithoutRef } from "react";
 import { buttonVariants } from "./button";

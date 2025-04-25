@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import fs from "fs";
+import fs from "node:fs";
 import { MAX_FILE_SIZE } from "shared/const";
 import { api } from "~/app";
 import { CreateUser } from "~/tests/create-user";
@@ -36,7 +36,7 @@ describe("file", () => {
 		const uploadedFile = await api.file.index.post({ file: testFile }, { headers, query: { isImage: false } });
 		expect(uploadedFile.data).toBeTruthy();
 
-		const file = await api.file({ id: uploadedFile.data!.id }).get();
+		const file = await api.file({ id: uploadedFile.data! }).get();
 		expect(file.response.headers.get("Content-Type")).toBe(
 			"application/octet-stream, text/event-stream; charset=utf-8",
 		);
@@ -51,7 +51,7 @@ describe("file", () => {
 		const uploadedFile = await api.file.index.post({ file: testFile }, { headers, query: { isImage: false } });
 		expect(uploadedFile.data).toBeTruthy();
 
-		const file = await api.file({ id: uploadedFile.data!.id }).get({ headers });
+		const file = await api.file({ id: uploadedFile.data! }).get({ headers });
 		expect(file.response.headers.get("Content-Type")).toBe(
 			"application/octet-stream, text/event-stream; charset=utf-8",
 		);

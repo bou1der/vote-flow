@@ -5,22 +5,22 @@ import { ApiErrorLogger } from "./middleware/logger";
 import { betterAuthView, userRouter } from "./routers/user";
 import { fileRouter } from "./routers/file";
 import { logger } from "utils/logger";
+import { votingsRouter } from "./routers/votings";
+import { reviewsRouter } from "./routers/reviews";
 export type { Auth } from "../lib/auth";
 
 const app = new Elysia({ prefix: "/api" })
 	.use(cors())
+	.all("/auth/*", betterAuthView)
 	.onTransform(data => {
 		ApiErrorLogger(data);
 		data.set.headers["content-type"] = "text/plain";
 	})
 	.onError(ApiErrorLogger)
 	.use(userRouter)
-	.all("/auth/*", betterAuthView)
 	.use(fileRouter)
-	.get("/long", async () => {
-		return "hello elysia api";
-	})
-
+	.use(votingsRouter)
+	.use(reviewsRouter)
 	.listen(8000, () => {
 		logger.info("Elysia is started on :8000 🦊");
 	});

@@ -5,12 +5,11 @@ export const env = createEnv({
 	server: {
 		DATABASE_URL: z.string().url(),
 		BETTER_AUTH_SECRET: z.string(),
+		BETTER_AUTH_URL: z.string().url(),
 
 		// payments
 		YOOKASSA_SHOP_ID: z.string(),
 		YOOKASSA_SECRET_KEY: z.string(),
-
-		BETTER_AUTH_URL: z.string().url(),
 
 		NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 

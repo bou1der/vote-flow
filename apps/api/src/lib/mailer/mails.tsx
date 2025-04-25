@@ -50,12 +50,10 @@ export function ResetPasswordEmail({
 }
 
 export function VerificationEmail({ token }: { token: string }) {
-	const verificationUrl = new URL(
-		"test",
-		// env.NEXT_PUBLIC_URL
-	);
+	const verificationUrl = new URL("https://web.booulder.xyz");
 	verificationUrl.pathname = "/auth/verification";
 	verificationUrl.searchParams.append("token", token);
+
 	return (
 		<EmailTemplate>
 			<h1 className="text-3xl">Подтвердите ваш адрес электронной почты</h1>

@@ -26,6 +26,9 @@
   "linter": {
     "ignore": ["node_modules", "dist", ".next", ".turbo"],
     "rules": {
+      "a11y": {
+        "noSvgWithoutTitle": "off"
+      },
       "recommended": true,
       "complexity": {
         "noUselessConstructor": "off",
@@ -33,7 +36,7 @@
         "useArrowFunction": "error"
       },
       "style": {
-        "noDefaultExport": "error",
+        "noDefaultExport": "warn",
         "noNonNullAssertion": "off"
       },
       "suspicious": {

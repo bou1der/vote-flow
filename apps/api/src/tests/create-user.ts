@@ -6,6 +6,7 @@ export async function CreateUser(email?: string) {
 			email: email ?? "test@example.com",
 			password: "test1234",
 			name: "Test User",
+			//@ts-ignore
 			role: "user",
 		},
 		asResponse: true,

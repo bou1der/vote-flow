@@ -7,11 +7,13 @@ export const env = createEnv({
 	},
 
 	client: {
-		NEXT_PUBLIC_API_URL: z.string().url(),
+		NEXT_PUBLIC_DOMAIN: z.string(),
+		NEXT_PUBLIC_PROTOCOL: z.string(),
 	},
 
 	runtimeEnv: {
-		NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+		NEXT_PUBLIC_DOMAIN: process.env.NEXT_PUBLIC_DOMAIN,
+		NEXT_PUBLIC_PROTOCOL: process.env.NEXT_PUBLIC_PROTOCOL,
 		NODE_ENV: process.env.NODE_ENV,
 	},
 	skipValidation: !!process.env.SKIP_ENV_VALIDATION,

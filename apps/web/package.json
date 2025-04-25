@@ -26,21 +26,18 @@
     "nuqs": "^2.2.3",
     "plaiceholder": "^3.0.0",
     "better-auth": "^1.2.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
     "react-hook-form": "^7.53.2",
     "server-only": "^0.0.1",
     "sonner": "^1.7.0",
     "api": "workspace:*",
     "ui": "workspace:*",
-    "shared": "*"
+    "shared": "workspace:*",
+    "utils": "workspace:*"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",
     "@repo/typescript-config": "*",
     "@types/node": "^22.13.9",
-    "@types/react": "19.0.10",
-    "@types/react-dom": "19.0.4",
     "typescript": "5.8.2"
   }
 }

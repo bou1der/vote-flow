@@ -4,8 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
-// import {} from "ui/components/"
-// import { Toaster } from "ui//components/ui/sonner";
+import { Toaster } from "ui/components/sonner";
 import QueryClientProviderContext from "./query-client-provider";
 
 const main_font = Inter({
@@ -26,9 +25,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 			<body>
 				<NuqsAdapter>
 					<QueryClientProviderContext>{children}</QueryClientProviderContext>
-					{
-						// <Toaster />
-					}
+					<Toaster />
 				</NuqsAdapter>
 			</body>
 		</html>

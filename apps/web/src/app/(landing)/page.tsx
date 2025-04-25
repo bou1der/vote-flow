@@ -1,7 +1,17 @@
-export default async function LandingPage() {
+import { Our } from "./our";
+import { Questions } from "./questions";
+import { Reviews } from "./reviews";
+import { Steps } from "./steps";
+import { Welcome } from "./welcome";
+
+export default function LandingPage() {
 	return (
-		<div>
-			<h1>Landing page</h1>
-		</div>
+		<>
+			<Welcome />
+			<Our />
+			<Steps />
+			<Reviews />
+			<Questions />
+		</>
 	);
 }

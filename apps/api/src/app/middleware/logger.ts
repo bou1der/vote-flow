@@ -1,6 +1,8 @@
 import type { ValidationError } from "elysia";
 import { logger } from "utils/logger";
 
+const prettyLog = process.env.NODE_ENV !== "production";
+
 export function ApiErrorLogger({
 	request,
 	path,
@@ -28,19 +30,26 @@ export function ApiErrorLogger({
 		});
 		return;
 	}
+	if (error) {
+		console.error(error);
+	}
 
 	switch (code) {
 		case "VALIDATION":
+			prettyLog && console.error(`\n 󰛉 Validation not passed \n ${method.toUpperCase()}:${path}`);
 			logger.info({
 				error,
 			});
+			prettyLog && console.error(`\n ${JSON.stringify(body)}`);
 			return;
 		case "UNKNOWN":
 		case "INTERNAL_SERVER_ERROR":
+			prettyLog && console.error(`\n 󰛉 Server error \n ${method.toUpperCase()}:${path}`);
 			logger.error({
 				path: `${method.toUpperCase()}:${path}`,
 				error,
 			});
+			prettyLog && console.error(`End server error \n`);
 			return;
 	}
 }

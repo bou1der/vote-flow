@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {},
   "exports": {
-    "./logger": {
-      "default": "./src/logger/index.ts"
+    "./*": {
+      "default": "./src/*/index.ts"
     }
   },
   "devDependencies": {

@@ -1,5 +1,6 @@
 "use client";
 
+import { env } from "utils/env";
 import { ImageOff } from "lucide-react";
 import NextImage, { type ImageProps as NextImageProps } from "next/image";
 import { useState } from "react";
@@ -31,7 +32,7 @@ export default function Image({ src, imageClassName, ...props }: ImageProps) {
 					)}
 					<NextImage
 						{...props}
-						src={`/api/file/${src}`}
+						src={`${env.NEXT_PUBLIC_PROTOCOL}://api.${env.NEXT_PUBLIC_DOMAIN}/api/file/${src}`}
 						className={cn("object-cover size-full", imageClassName)}
 						onLoad={() => {
 							setIsLoading(false);

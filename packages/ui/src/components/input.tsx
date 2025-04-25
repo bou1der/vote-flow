@@ -96,6 +96,7 @@ const ImageInput = React.forwardRef<HTMLInputElement, ImageInputProps>(
 										<img
 											className={cn(className, "size-20 rounded-full object-cover")}
 											src={reader.result instanceof ArrayBuffer ? undefined : reader.result!}
+											alt=""
 										/>,
 									);
 								}, 400);
@@ -133,4 +134,4 @@ const ImageInput = React.forwardRef<HTMLInputElement, ImageInputProps>(
 );
 ImageInput.displayName = "ImageInput";
 
-export { Input, PasswordInput };
+export { Input, PasswordInput, ImageInput };

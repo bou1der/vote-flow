@@ -1,66 +1,50 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { notFound, usePathname, useRouter } from "next/navigation";
-import { use, useEffect } from "react";
+import { notFound } from "next/navigation";
+import { use, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "~/lib/client/auth-client";
-import Loader from "ui/components/loader";
+import { Button } from "ui/components/button";
 
 export default function VerificationPage({
 	searchParams,
 }: {
 	searchParams: Promise<{
 		token: string | undefined;
-		success: string | undefined;
 	}>;
 }) {
-	const { token, success } = use(searchParams);
-	const pathname = usePathname();
-	const router = useRouter();
-
-	if (success === "true") {
-		return <h1>Успешно</h1>;
-	}
-
-	if (success === "false") {
-		return <h1>Ошибка авторизации</h1>;
-	}
+	const { token } = use(searchParams);
+	const [success, setSuccess] = useState<boolean | undefined>(undefined);
 
 	if (!token) return notFound();
 
 	const { isPending, mutate } = useMutation({
-		async mutationFn() {
-			return (
-				await authClient.verifyEmail({
-					query: {
-						token,
-					},
-				})
-			).data;
-		},
-		onError(err) {
-			toast.error("Ошибка верификации", {
-				description: err.message,
+		mutationKey: ["verification"],
+		mutationFn: async () => {
+			const res = await authClient.verifyEmail({
+				query: {
+					token,
+				},
 			});
-			const newSearchParams = new URLSearchParams();
-			newSearchParams.append("success", "false");
-			router.push(`${pathname}?${newSearchParams.toString()}`);
+			if (res.error) throw res.error;
+			return res.data;
 		},
-		onSuccess() {
-			const newSearchParams = new URLSearchParams();
-			newSearchParams.append("success", "true");
-			router.push(`${pathname}?${newSearchParams.toString()}`);
+		onError: err => {
+			toast.error("Ошибка верицикации");
+			setSuccess(false);
+		},
+		onSuccess: () => {
+			toast.success("Успешно");
+			setSuccess(true);
 		},
 	});
 
-	if (isPending) {
-		return <Loader />;
-	}
-
-	useEffect(() => {
-		mutate();
-	}, []);
-
-	return;
+	return (
+		<div className="w-screen h-screen flex justify-between items-center">
+			<Button loading={isPending} disabled={success !== undefined} onClick={() => mutate()}>
+				{success === true ? "Успешно" : success === false ? "Ошибка" : "Подтвердить"}
+			</Button>
+		</div>
+	);
 }
