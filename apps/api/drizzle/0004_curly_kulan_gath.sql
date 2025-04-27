@@ -1,0 +1,1 @@
+ALTER TABLE "project_payments" ADD COLUMN "comment" varchar(255);

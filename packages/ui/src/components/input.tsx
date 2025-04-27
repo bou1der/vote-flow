@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 
-import { EyeIcon, EyeOffIcon, X } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Upload, X } from "lucide-react";
 import { Button } from "./button";
 import Loader from "./loader";
 import { Label } from "./label";
@@ -56,13 +56,6 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(({ classNam
 });
 PasswordInput.displayName = "PasswordInput";
 
-class f {
-	b64 = "";
-	fileName = "";
-	contentType = "";
-	fileSize = 0;
-}
-
 const isFile = (arg: unknown): arg is File => arg instanceof File;
 const isString = (arg: unknown): arg is string => typeof arg === "string";
 
@@ -83,9 +76,15 @@ const ImageInput = React.forwardRef<HTMLInputElement, ImageInputProps>(
 
 		return (
 			<>
-				<Label className={cn(className, "w-full flex gap-2")} htmlFor="img-input">
+				<Label className={cn(className, "w-full group relative flex gap-2 cursor-pointer")} htmlFor="img-input">
 					{isString(value) ? (
-						<Image className={cn(className, "size-20 rounded-full")} src={value} alt="" width={2000} height={2000} />
+						<Image
+							className={cn(className, "size-full rounded-lg h-40 ")}
+							src={value}
+							alt=""
+							width={2000}
+							height={2000}
+						/>
 					) : isFile(value) ? (
 						(() => {
 							const reader = new FileReader();
@@ -94,7 +93,7 @@ const ImageInput = React.forwardRef<HTMLInputElement, ImageInputProps>(
 								setTimeout(() => {
 									setNode(
 										<img
-											className={cn(className, "size-20 rounded-full object-cover")}
+											className={cn(className, "size-full h-40 rounded-lg object-cover")}
 											src={reader.result instanceof ArrayBuffer ? undefined : reader.result!}
 											alt=""
 										/>,
@@ -105,14 +104,11 @@ const ImageInput = React.forwardRef<HTMLInputElement, ImageInputProps>(
 							return node;
 						})()
 					) : (
-						<div className={cn(className, "size-20 bg-input border-2 border-white border-dashed rounded-full")} />
+						<div className={cn(className, "size-full h-40 bg-input border-2 border-input  rounded-lg")} />
 					)}
-					{hidden || (
-						<div className="flex flex-col items-start justify-center">
-							<p className="text-sm text-white/80">Изображение в любом формате</p>
-							<p className="text-sm text-white/80">Размер файла до {MAX_FILE_SIZE / 1024 / 1024}МБ</p>
-						</div>
-					)}
+					<div className="absolute z-10 transition-all rounded-lg size-full flex items-center justify-center bg-white/10 group-hover:opacity-100 opacity-0">
+						<Upload />
+					</div>
 				</Label>
 				<input
 					onChange={async e => {

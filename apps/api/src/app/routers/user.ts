@@ -1,5 +1,4 @@
-import Elysia, { type Context, error, t } from "elysia";
-import { userMiddleware } from "../middleware/auth";
+import Elysia, { error, t } from "elysia";
 import { UserSchema, type UserRole } from "shared/types/user";
 import { auth } from "~/lib/auth";
 import { db, user } from "~/lib/db";
@@ -7,11 +6,12 @@ import { api } from "..";
 import { eq } from "drizzle-orm";
 
 export const userService = new Elysia({ name: "user/service" })
-	.derive({ as: "global" }, async ({ headers }) => await userMiddleware(headers))
+	.derive({ as: "global" }, async ({ request: { headers } }) => ({
+		session: await auth.api.getSession({ headers }),
+	}))
 	.macro({
 		hasRole: (role?: UserRole) => {
 			if (!role) return;
-
 			return {
 				beforeHandle({ session }) {
 					if (session?.user?.role !== role)
@@ -23,7 +23,6 @@ export const userService = new Elysia({ name: "user/service" })
 		},
 		isSignedIn: (enabled?: boolean) => {
 			if (!enabled) return;
-
 			return {
 				beforeHandle({ session }) {
 					if (!session?.user)
@@ -34,16 +33,6 @@ export const userService = new Elysia({ name: "user/service" })
 			};
 		},
 	});
-
-export const betterAuthView = (context: Context) => {
-	const BETTER_AUTH_ACCEPT_METHODS = ["POST", "GET"];
-	if (BETTER_AUTH_ACCEPT_METHODS.includes(context.request.method)) {
-		return auth.handler(context.request);
-	} else {
-		context.error(405);
-		return;
-	}
-};
 
 export const userRouter = new Elysia({ prefix: "/user" })
 	.use(userService)

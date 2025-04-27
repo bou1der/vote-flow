@@ -1,14 +1,19 @@
-import { headers } from "next/headers";
+// import { headers } from "next/headers";
 import { Logo } from "ui/components/custom/logo";
 import Link from "ui/components/link";
-import { authClient } from "~/lib/client/auth-client";
+import { api } from "~/lib/api";
+import { headers } from "~/lib/server/headers";
+// import { authClient } from "~/lib/client/auth-client";
 
 export async function Navbar() {
-	const { data: session } = await authClient.getSession({
-		fetchOptions: {
-			headers: await headers(),
-		},
+	const { data: session } = await api.user.index.get({
+		headers: await headers(),
 	});
+	// const { data: session } = await authClient.getSession({
+	// 	fetchOptions: {
+	// 		headers: await headers(),
+	// 	},
+	// });
 
 	return (
 		<div className="px-10 py-4 z-20">

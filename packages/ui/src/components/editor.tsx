@@ -14,6 +14,7 @@ import Paragraph from "@tiptap/extension-paragraph";
 
 import { Skeleton } from "./skeleton";
 import { cn } from "../lib/utils";
+import { Button } from "./button";
 
 const HeadingsSheet = [
 	{
@@ -137,8 +138,10 @@ function EditorControllers({
 						setCurrentHeading(HeadingsSheet.find(e => e.type === value) ?? HeadingsSheet[0]!);
 					}}
 				>
-					<SelectTrigger className="w-fit px-6 gap-4   transition-all">
-						<SelectValue placeholder="Форматирование" />
+					<SelectTrigger className="w-fit transition-all" asChild>
+						<Button variant={"input"} className="w-fit" chevron>
+							{currentHeading.name}
+						</Button>
 					</SelectTrigger>
 					<SelectContent className="bg-background border-input">
 						{HeadingsSheet.map(heading => {

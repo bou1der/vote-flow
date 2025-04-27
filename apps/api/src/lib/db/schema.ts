@@ -1,5 +1,7 @@
 import {
 	boolean,
+	decimal,
+	doublePrecision,
 	index,
 	integer,
 	pgEnum,
@@ -139,3 +141,20 @@ export const reviewRelations = relations(reviews, ({ one }) => ({
 		relationName: "review_user",
 	}),
 }));
+
+export const paymentStatuses = pgEnum("payment_statuses", ["waiting_for_capture", "pending", "succeeded", "canceled"]);
+export const payments = createTable("payments", {
+	id: varchar("id", { length: 255 })
+		.notNull()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	amount: doublePrecision("amount").notNull(),
+	yookassaId: varchar("yookassa_id", { length: 255 }).notNull(),
+	status: paymentStatuses("status").notNull().default("waiting_for_capture"),
+	comment: varchar("comment", { length: 255 }),
+	userId: varchar("user_id", { length: 255 })
+		.notNull()
+		.references(() => user.id),
+	idempotencyKey: varchar("idempotency_key").notNull().unique(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+});

@@ -32,7 +32,11 @@ export function CreateVotingForm() {
 	const createMutation = useMutation({
 		mutationKey: ["create", "voting"],
 		mutationFn: async (data: z.infer<typeof VotingFormSchema>) => {
-			const res = await api.votings.index.post(data);
+			const res = await api.votings.index.post({
+				...data,
+				from: data.dates.from,
+				to: data.dates.to,
+			});
 			if (res.error) throw new TreatyError(res.error);
 			return res.data;
 		},

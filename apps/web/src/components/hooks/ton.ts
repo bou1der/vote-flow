@@ -1,7 +1,7 @@
 "use client";
 
 import TonConnector, { IStorage } from "@tonconnect/sdk";
-import { env } from "~/env";
+// import { env } from "~/env";
 
 const storage: IStorage = {
 	async setItem(key, value) {

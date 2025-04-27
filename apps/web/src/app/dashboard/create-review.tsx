@@ -50,13 +50,13 @@ export function CreateReviewForm() {
 			<SheetTrigger asChild>
 				<Button variant={"secondary"}>Оставить отзыв</Button>
 			</SheetTrigger>
-			<SheetContent className="space-y-5 flex flex-col justify-stretch">
+			<SheetContent side="left" className="space-y-5 container flex flex-col justify-stretch">
 				<SheetHeader>
 					<SheetTitle>Оставить отзыв</SheetTitle>
 				</SheetHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit, OnError)} className="flex flex-col justify-between grow">
-						<div className="space-y-6">
+						<div className="space-y-6 ">
 							<FormField
 								control={form.control}
 								name="description"

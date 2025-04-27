@@ -4,7 +4,6 @@ import { FilterSchema } from "shared/types/filters";
 import { db, reviews, user } from "~/lib/db";
 import { and, eq } from "drizzle-orm";
 import { ReviewSchema } from "shared/types/reviews";
-import { logger } from "utils/logger";
 
 export const reviewsRouter = new Elysia({ prefix: "/reviews" })
 	.use(userService)

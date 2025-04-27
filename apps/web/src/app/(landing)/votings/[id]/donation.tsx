@@ -1,11 +1,10 @@
-import { DialogClose, DialogTitle } from "@radix-ui/react-dialog";
 import { Bitcoin, CreditCard, X } from "lucide-react";
-import { DonateIcon } from "~/components/icons/donate";
-import { Button } from "~/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "~/components/ui/dialog";
-import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { DonateIcon } from "ui/components/icons/donate";
+import { Dialog, DialogContent, DialogHeader, DialogTrigger, DialogTitle } from "ui/components/dialog";
+import { Tabs, TabsList, TabsTrigger } from "ui/components/tabs";
 import { FiatTab } from "./fiat-tab";
-import { CryptoTab } from "./crypto-tab";
+// import { CryptoTab } from "./crypto-tab";
+import { Button } from "ui/components/button";
 
 export function DonatSection({
 	votingId,
@@ -21,14 +20,9 @@ export function DonatSection({
 				</Button>
 			</DialogTrigger>
 
-			<DialogContent noCloseButton>
+			<DialogContent>
 				<DialogHeader>
-					<DialogTitle className="text-lg text-center relative">
-						Выберите способ оплаты
-						<DialogClose className="absolute cursor-pointer right-0 top-1/2 -translate-y-1/2">
-							<X className="size-5" />
-						</DialogClose>
-					</DialogTitle>
+					<DialogTitle className="text-lg text-center relative">Выберите способ оплаты</DialogTitle>
 				</DialogHeader>
 
 				<Tabs defaultValue="fiat">
@@ -44,9 +38,9 @@ export function DonatSection({
 					</TabsList>
 
 					<FiatTab votingId={votingId} />
-					<CryptoTab votingId={votingId} />
 				</Tabs>
 			</DialogContent>
 		</Dialog>
 	);
 }
+// <CryptoTab votingId={votingId} />

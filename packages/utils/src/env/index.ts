@@ -8,7 +8,7 @@ export const env = createEnv({
 
 	client: {
 		NEXT_PUBLIC_DOMAIN: z.string(),
-		NEXT_PUBLIC_PROTOCOL: z.string(),
+		NEXT_PUBLIC_PROTOCOL: z.enum(["http", "https"]),
 	},
 
 	runtimeEnv: {

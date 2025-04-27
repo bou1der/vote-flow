@@ -6,22 +6,48 @@ import { VotingSchema } from "shared/types/votings";
 import { userService } from "./user";
 import { api } from "..";
 import { isAfter, isBefore } from "date-fns";
+import { authHeaders } from "~/lib/auth";
 
-const VOTINGS_SQ = sql<string>`(SELECT (*) FROM ${votes} WHERE ${votes.votingId} = ${votings.id})`;
+const VOTINGS_SQ = sql<string>`(SELECT COUNT(*) FROM ${votes} WHERE ${votes.votingId} = ${votings.id})`;
+
 export const votingsRouter = new Elysia({ prefix: "/votings" })
 	.use(userService)
+	.get("/:id", async ({ session, params }) => {
+		const res = await db
+			.select({
+				id: answers.id,
+				votingId: answers.votingId,
+				description: answers.description,
+				votes: sql<number>`(SELECT CAST(COUNT(*) AS INTEGER) FROM ${votes}
+          WHERE ${votes.votingId} = ${answers.votingId}
+          AND ${votes.answerId} = ${answers.id})`,
+				isVoted: session
+					? sql<boolean>`EXISTS(${db
+							.select()
+							.from(votes)
+							.where(
+								and(eq(votes.votingId, params.id), eq(votes.answerId, answers.id), eq(votes.userId, session!.user.id)),
+							)})`
+					: sql<boolean>`false`,
+			})
+			.from(answers)
+			.where(and(eq(answers.votingId, params.id)));
+		return res;
+	})
 	.get(
 		"/",
 		async ({ query, session }) => {
 			const res = await db
 				.select({
 					id: votings.id,
+					description: votings.description,
 					question: votings.question,
 					imageId: votings.imageId,
 					to: votings.to,
 					from: votings.from,
+					createdBy: votings.createdBy,
 					createdAt: votings.createdAt,
-					// votes: VOTINGS_SQ,
+					votes: VOTINGS_SQ,
 				})
 				.from(votings)
 				.where(
@@ -51,9 +77,10 @@ export const votingsRouter = new Elysia({ prefix: "/votings" })
 					query: {
 						isImage: true,
 					},
-					headers,
+					headers: authHeaders(headers),
 				},
 			);
+
 			if (!imageId) return error(500, "Ошибка загрузки изображения");
 
 			return await db.transaction(async trx => {
@@ -81,6 +108,7 @@ export const votingsRouter = new Elysia({ prefix: "/votings" })
 			body: VotingSchema,
 		},
 	)
+
 	.post(
 		"/:id",
 		async ({ params, body, session, error }) => {

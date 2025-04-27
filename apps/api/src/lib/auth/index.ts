@@ -13,6 +13,11 @@ import { env as globalEnv } from "utils/env";
 
 export const auth = betterAuth({
 	advanced: {
+		cookies: {
+			session_token: {
+				name: "session",
+			},
+		},
 		crossSubDomainCookies: {
 			enabled: true,
 			domain: `.${globalEnv.NEXT_PUBLIC_DOMAIN}`,
@@ -41,6 +46,11 @@ export const auth = betterAuth({
 				required: true,
 				defaultValue: "user" as UserRole,
 				input: false,
+			},
+			balance: {
+				type: "number",
+				required: true,
+				defaultValue: 0,
 			},
 		},
 	},
@@ -100,5 +110,14 @@ export const auth = betterAuth({
 	trustedOrigins: [`https://web.${globalEnv.NEXT_PUBLIC_DOMAIN}`],
 });
 
+export const authHeaders = (headers: Record<string, string | undefined>) => {
+	const h: Record<string, string | undefined> = {};
+	Object.keys(headers).map(key => {
+		if (headers[key]?.includes("better-auth")) {
+			h[key] = headers[key];
+		}
+	});
+	return h;
+};
+
 export type Auth = typeof auth;
-export type Session = Awaited<ReturnType<(typeof auth)["api"]["getSession"]>>;

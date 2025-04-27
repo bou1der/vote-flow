@@ -1,0 +1,1 @@
+ALTER TABLE "user" ADD COLUMN "balance" double precision DEFAULT 0 NOT NULL;
